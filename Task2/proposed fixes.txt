@@ -1,0 +1,98 @@
+
+:::DNS ISSUES:::
+
+###-Local DNS server down or misconfigured?
+
+Confirm:
+
+
+cat /etc/resolv.conf  # Check nameserver IPs
+ping -c 4 $(grep nameserver /etc/resolv.conf | awk '{print $2}')
+
+Fix:
+
+
+# Temporarily override DNS (uses Google DNS)
+sudo sed -i 's/nameserver .*/nameserver 8.8.8.8/' /etc/resolv.conf
+
+###-Missing DNS record??
+
+Confirm: dig internal.example.com shows no answer section
+
+Fix: Add record to DNS server
+
+###-Incorrect /etc/resolv.conf?
+
+Confirm: Check file contents against expected DNS servers.
+
+Command
+
+$ sudo nmcli con mod "ConnectionName" ipv4.dns "192.168.1.1,192.168.1.2"
+$ sudo systemctl restart NetworkManager
+
+:::NETWORK LAYER:::
+
+###-Firewall blocking port 80/443?
+
+Confirm: Check current firewall rules with:
+
+Command
+
+$ sudo ufw status
+$ sudo iptables -L
+$ sudo ufw allow out 53/tcp
+$ sudo ufw allow out 53/udp
+
+###-Routing issue?
+
+Fix Default Gateway
+
+# Delete incorrect route
+sudo ip route del default via 192.168.1.1  
+
+# Add correct gateway
+sudo ip route add default via 10.0.0.1
+
+###- Network connectivity ?
+
+Confirm: traceroute DNS_IP or mtr DNS_IP
+
+Fix: Correct routing tables or network config
+
+:::SERVICE LAYER:::
+
+###-Web server crashed?
+
+Confirm: Check the status of the web service:
+
+Command
+
+$ sudo systemctl status apache2
+OR
+$ sudo systemctl status nginx
+
+Fix:
+
+Command
+
+$ sudo systemctl start apache2
+$ sudo systemctl enable apache2
+OR
+$ sudo systemctl start nginx
+$ sudo systemctl enable nginx
+
+###-Host firewall?
+Confirm: Check if the service is accessible locally:
+
+Command
+ 
+$ curl http://localhost
+
+If this works but the external IP fails, the host firewall may be blocking access.
+
+Fix:
+
+Command
+
+$ sudo ufw allow 80/tcp
+$ sudo ufw allow 443/tcp

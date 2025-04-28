@@ -1,0 +1,19 @@
+DNS Layer:
+
+-Local DNS server down or misconfigured.
+-Missing DNS record
+-Incorrect /etc/resolv.conf
+
+Network Layer:
+
+-Firewall blocking port 80/443
+-Routing issue.
+-Network connectivity 
+
+
+Service Layer:
+
+-Web server crashed
+-Service bound to wrong IP 
+-Host firewall 
+-Load balancer issues 
