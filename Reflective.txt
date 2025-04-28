@@ -1,0 +1,19 @@
+-How your script handles arguments and options?
+
+It makes sure there are at least two arguments: the search string and the file.
+The script uses getopts to process command-line flags
+After that, it gets the search word we want to search after  and file name from the remaining arguments.
+check the file
+then reads the file line by line
+
+
+-Supporting regex or other options like (-i, -c, -l)?
+
+Extend getopts to include new flags
+for C, I will  modify the script to count how many lines match and print that number.
+The core flow (options → validation )  would stay intact, but the search aspect will grow branches.
+
+
+-What was hardest to implement and why?
+
+the hardest was the options part  implementint it  was trickey of how you should  handling combined flags also, because i didn't understand how im supposed to do it in the first but i got it after a bit  of search 
